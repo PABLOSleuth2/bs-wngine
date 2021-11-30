@@ -13,10 +13,15 @@ using StringTools;
 class VideoState extends MusicBeatState
 {
 	public static var androidPath:String = 'file:///android_asset/';
+
 	public var nextState:FlxState;
+
+	var text:FlxText;
+
 	private var camAchievement:FlxCamera;
 
-	var someshit:FlxText;
+	//var firsttimeeaster:Bool = true;
+	//Solucao burra
 
 	public function new(source:String, toTrans:FlxState)
 	{
@@ -27,10 +32,18 @@ class VideoState extends MusicBeatState
 	
 		FlxG.cameras.add(camAchievement);
 
-		someshit = new FlxText(0, 0, 0, "Video Ended\nTap To Screen", 48);
-		someshit.screenCenter();
-		someshit.alpha = 0;
-		add(someshit);
+		if(ClientPrefs.easteregg){
+		text = new FlxText(0, 0, 0, "Easter egg parça \nagora toque para continuar", 48); //Eu aprendi a mexer  nas opçoes só pra isso, por favor me mata
+		text.screenCenter();
+		text.alpha = 0;
+		add(text);
+		} else {
+			text = new FlxText(0, 0, 0, "toque para continuar", 48);
+			text.screenCenter();
+			text.alpha = 0;
+			add(text);
+		}
+
 
 		nextState = toTrans;
 
@@ -43,18 +56,18 @@ class VideoState extends MusicBeatState
 	public override function update(dt:Float) {
 		for (touch in FlxG.touches.list)
 			if (touch.justReleased)
-				onClose();
+				onClose(); //hmmmm maybe
 
 		super.update(dt);	
 	}
 
-	function onClose(){
-		someshit.alpha = 0;
+	function onClose(){// not working
+		text.alpha = 0;
 		MusicBeatState.switchState(nextState);
 	}
 
 	function onURLChanging(url:String) {
-		someshit.alpha = 1;
-		if (url == 'http://exitme(.*)') onClose();
+		text.alpha = 1;
+		if (url == 'http://exitme(.*)') onClose(); // drity hack lol
 	}
 }
