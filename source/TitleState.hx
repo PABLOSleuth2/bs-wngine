@@ -27,9 +27,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
-#if sys
-import sys.FileSystem;
-#end
 
 using StringTools;
 
@@ -50,17 +47,10 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
+
 	var easterEggEnabled:Bool = true; //Disable this to hide the easter egg
-//	#if desktop
 	var easterEggKeyCombination:Array<FlxKey> = [FlxKey.B, FlxKey.B]; //bb stands for bbpanzu cuz he wanted this lmao
-//	#else // android
-//	var easterEggKeyCombination:Array<controls> = [controls.BACK, controls.BACK]; //backback stands for bbpanzu cuz he wanted this lmao
-//	#end
-//	#if desktop
 	var lastKeysPressed:Array<FlxKey> = [];
-//	#else  // android
-	//var lastKeysPressed:Array<controls> = [];
-	//#end
 
 	var mustUpdate:Bool = false;
 	public static var updateVersion:String = '';
@@ -74,7 +64,7 @@ class TitleState extends MusicBeatState
 		#if (polymod && !html5)
 		polymod.Polymod.init({modRoot: "mods", dirs: folders});
 		#end
-
+		
 		#if CHECK_FOR_UPDATES
 		if(!closedState) {
 			trace('checking for update');

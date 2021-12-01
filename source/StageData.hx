@@ -1,7 +1,5 @@
 package;
 
-import openfl.utils.Assets;
-import openfl.Assets;
 #if dontUseManifest
 import sys.io.File;
 import sys.FileSystem;
@@ -66,12 +64,12 @@ class StageData {
 		var rawJson:String = null;
 		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');
 
-		#if !android
+		#if dontUseManifest
 		var modPath:String = Paths.modFolders('stages/' + stage + '.json');
 		if(FileSystem.exists(modPath)) {
-			rawJson = Assets.getText(modPath);
+			rawJson = File.getContent(modPath);
 		} else if(FileSystem.exists(path)) {
-			rawJson = Assets.getText(path);
+			rawJson = File.getContent(path);
 		}
 		#else
 		if(Assets.exists(path)) {

@@ -12,48 +12,43 @@ class ClientPrefs {
 	public static var showFPS:Bool = true;
 	public static var flashing:Bool = true;
 	public static var globalAntialiasing:Bool = true;
-	public static var noteSplashes:Bool = false;
+	public static var noteSplashes:Bool = true;
 	public static var lowQuality:Bool = false;
 	public static var framerate:Int = 60;
 	public static var cursing:Bool = true;
-	public static var violence:Bool = false;
+	public static var violence:Bool = true;
 	public static var camZooms:Bool = true;
 	public static var hideHud:Bool = false;
 	public static var noteOffset:Int = 0;
-	public static var bruhshit:Float = 0.5;
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var imagesPersist:Bool = false;
 	public static var ghostTapping:Bool = true;
 	public static var hideTime:Bool = false;
-	public static var easteregg:Bool = false;
-	public static var sussybest:Bool = false;
-	public static var cutscene:Bool = false;
-	public static var girlfriend:Bool = false;
-	public static var idkwhy:Bool = false;
 
-	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
-	public static var keyBinds:Map<String, Array<FlxKey>> = [
+	//Every key has two binds, these binds are defined on defaultKeys! If you want your control to be changeable, you have to add it on ControlsSubState (inside OptionsState.hx)'s list
+	public static var keyBinds:Map<String, Dynamic> = new Map<String, Dynamic>();
+	public static var defaultKeys:Map<String, Dynamic>;
+
+	public static function startControls() {
 		//Key Bind, Name for ControlsSubState
-		'note_left'		=> [A, LEFT],
-		'note_down'		=> [S, DOWN],
-		'note_up'		=> [W, UP],
-		'note_right'	=> [D, RIGHT],
+		keyBinds.set('note_left', [A, LEFT]);
+		keyBinds.set('note_down', [S, DOWN]);
+		keyBinds.set('note_up', [W, UP]);
+		keyBinds.set('note_right', [D, RIGHT]);
 		
-		'ui_left'		=> [A, LEFT],
-		'ui_down'		=> [S, DOWN],
-		'ui_up'			=> [W, UP],
-		'ui_right'		=> [D, RIGHT],
+		keyBinds.set('ui_left', [A, LEFT]);
+		keyBinds.set('ui_down', [S, DOWN]);
+		keyBinds.set('ui_up', [W, UP]);
+		keyBinds.set('ui_right', [D, RIGHT]);
 		
-		'accept'		=> [SPACE, ENTER],
-		'back'			=> [BACKSPACE, ESCAPE],
-		'pause'			=> [ENTER, ESCAPE],
-		'reset'			=> [R, NONE],
-	];
-	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
+		keyBinds.set('accept', [SPACE, ENTER]);
+		keyBinds.set('back', [BACKSPACE, ESCAPE]);
+		keyBinds.set('pause', [ENTER, ESCAPE]);
+		keyBinds.set('reset', [R, NONE]);
 
-		public static function loadDefaultKeys() {
+
+		// Don't delete this
 		defaultKeys = keyBinds.copy();
-		//trace(defaultKeys);
 	}
 
 	public static function saveSettings() {
@@ -65,10 +60,10 @@ class ClientPrefs {
 		FlxG.save.data.noteSplashes = noteSplashes;
 		FlxG.save.data.lowQuality = lowQuality;
 		FlxG.save.data.framerate = framerate;
-		FlxG.save.data.violence = violence;
+		//FlxG.save.data.cursing = cursing;
+		//FlxG.save.data.violence = violence;
 		FlxG.save.data.camZooms = camZooms;
-		FlxG.save.data.noteOffset = noteOffset; 
-		FlxG.save.data.bruhshit = bruhshit;
+		FlxG.save.data.noteOffset = noteOffset;
 		FlxG.save.data.hideHud = hideHud;
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.imagesPersist = imagesPersist;
@@ -76,11 +71,6 @@ class ClientPrefs {
 		FlxG.save.data.hideTime = hideTime;
 		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
 		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
-		FlxG.save.data.cutscene = cutscene;
-		FlxG.save.data.girlfriend = girlfriend;
-		FlxG.save.data.sussybest = sussybest;
-		FlxG.save.data.easteregg = easteregg;
-		FlxG.save.data.idkwhy = idkwhy;
 		FlxG.save.flush();
 
 		var save:FlxSave = new FlxSave();
@@ -103,23 +93,8 @@ class ClientPrefs {
 				Main.fpsVar.visible = showFPS;
 			}
 		}
-		if(FlxG.save.data.idkwhy != null) {
-			idkwhy = FlxG.save.data.idkwhy;
-		}
-		if(FlxG.save.data.sussybest != null) {
-			sussybest = FlxG.save.data.sussybest;
-		}
-		if(FlxG.save.data.cutscene != null) {
-			cutscene = FlxG.save.data.cutscene;
-		}
-		if(FlxG.save.data.girlfriend != null) {
-			girlfriend = FlxG.save.data.girlfriend;
-		}
 		if(FlxG.save.data.flashing != null) {
 			flashing = FlxG.save.data.flashing;
-		}
-		if(FlxG.save.data.easteregg != null) {
-			easteregg = FlxG.save.data.easteregg;
 		}
 		if(FlxG.save.data.globalAntialiasing != null) {
 			globalAntialiasing = FlxG.save.data.globalAntialiasing;
@@ -142,10 +117,10 @@ class ClientPrefs {
 		}
 		/*if(FlxG.save.data.cursing != null) {
 			cursing = FlxG.save.data.cursing;
-		}*/
+		}
 		if(FlxG.save.data.violence != null) {
 			violence = FlxG.save.data.violence;
-		}
+		}*/
 		if(FlxG.save.data.camZooms != null) {
 			camZooms = FlxG.save.data.camZooms;
 		}
@@ -154,9 +129,6 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.noteOffset != null) {
 			noteOffset = FlxG.save.data.noteOffset;
-		} 
-		if(FlxG.save.data.bruhshit != null) {
-			bruhshit = FlxG.save.data.bruhshit;
 		}
 		if(FlxG.save.data.arrowHSV != null) {
 			arrowHSV = FlxG.save.data.arrowHSV;
@@ -175,7 +147,7 @@ class ClientPrefs {
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', 'ninjamuffin99');
 		if(save != null && save.data.customControls != null) {
-			var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
+			var loadedControls:Map<String, Dynamic> = save.data.customControls;
 			for (control => keys in loadedControls) {
 				keyBinds.set(control, keys);
 			}
@@ -185,21 +157,5 @@ class ClientPrefs {
 
 	public static function reloadControls() {
 		PlayerSettings.player1.controls.setKeyboardScheme(KeyboardScheme.Solo);
-	}
-
-	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey> {
-		var copiedArray:Array<FlxKey> = arrayToCopy.copy();
-		var i:Int = 0;
-		var len:Int = copiedArray.length;
-
-		while (i < len) {
-			if(copiedArray[i] == NONE) {
-				copiedArray.remove(NONE);
-				--i;
-			}
-			i++;
-			len = copiedArray.length;
-		}
-		return copiedArray;
 	}
 }

@@ -47,9 +47,9 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-        #if MODS_ALLOWED
+		#if MODS_ALLOWED
 		Paths.destroyLoadedImages();
- 		#end	
+		#end
 		WeekData.reloadWeekFiles(false);
 		#if desktop
 		// Updating Discord Rich Presence
@@ -103,8 +103,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			Paths.currentModDirectory = songs[i].folder;			
-
+			Paths.currentModDirectory = songs[i].folder;
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
 
@@ -156,23 +155,20 @@ class FreeplayState extends MusicBeatState
 			trace(md);
 		 */
 
+		 addVirtualPad(FULL, A_B);
+
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
 		textBG.alpha = 0.6;
 		add(textBG);
 		#if PRELOAD_ALL
-		var leText:String = "Press C to listen to this Song.";
+		var leText:String = "Press SPACE to listen to this Song / Press RESET to Reset your Score and Accuracy.";
 		#else
-		var leText:String = "Press C to listen to this Song.";
+		var leText:String = "Press RESET to Reset your Score and Accuracy.";
 		#end
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, 18);
 		text.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
 		add(text);
-
-		#if mobileC
-		addVirtualPad(FULL, A_B_C);
-		#end
-
 		super.create();
 	}
 
@@ -225,7 +221,7 @@ class FreeplayState extends MusicBeatState
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
-		var space = FlxG.keys.justPressed.SPACE #if mobileC || _virtualpad.buttonC.justPressed #end;
+		var space = FlxG.keys.justPressed.SPACE;
 
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
@@ -257,7 +253,7 @@ class FreeplayState extends MusicBeatState
 		if(space && instPlaying != curSelected)
 		{
 			destroyFreeplayVocals();
-			Paths.currentModDirectory = songs[curSelected].folder;			
+			Paths.currentModDirectory = songs[curSelected].folder;
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 			if (PlayState.SONG.needsVoices)
@@ -277,7 +273,11 @@ class FreeplayState extends MusicBeatState
 		{
 			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+			#if dontUseManifest
+			if(!sys.FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !sys.FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+			#else
 			if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
+			#end
 				poop = songLowercase;
 				curDifficulty = 1;
 				trace('Couldnt find file');
@@ -389,7 +389,7 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 		changeDiff();
-		Paths.currentModDirectory = songs[curSelected].folder;		
+		Paths.currentModDirectory = songs[curSelected].folder;
 	}
 
 	private function positionHighscore() {

@@ -31,7 +31,7 @@ class AchievementsMenuState extends MusicBeatState
 		DiscordClient.changePresence("Achievements Menu", null);
 		#end
 
-		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
+		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -70,9 +70,7 @@ class AchievementsMenuState extends MusicBeatState
 		add(descText);
 		changeSelection();
 
-		#if mobileC
-		addVirtualPad(UP_DOWN, A_B);
-		#end
+		addVirtualPad(FULL, A_B);
 
 		super.create();
 	}
@@ -89,7 +87,7 @@ class AchievementsMenuState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			FlxG.switchState(new MainMenuState());
 		}
 	}
 

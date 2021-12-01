@@ -1,6 +1,5 @@
 package;
 
-import openfl.Assets;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -21,8 +20,6 @@ import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.ui.FlxButton;
-import lime.app.Application;
-//import utils.AndroidData;
 
 //import ui.FlxVirtualPad; // lol
 
@@ -37,13 +34,15 @@ class MainMenuState extends MusicBeatState
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
 
-	//var key_editors:FlxButton;
+	var key_space:FlxButton;
 	
 	var optionShit:Array<String> = ['story_mode', 'freeplay', #if ACHIEVEMENTS_ALLOWED 'awards', #end 'credits', #if !switch 'donate', #end 'options'/*, 'lol'*/];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
+
+	//var _pad:FlxVirtualPad;
 
 	override function create()
 	{
@@ -140,9 +139,16 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
-		#if mobileC
- 	 	addVirtualPad(FULL, A_B_C);
- 	 	#end
+		// _pad = new FlxVirtualPad(UP_DOWN, A_B_C);
+  //   	_pad.alpha = 0.75;
+  //   	this.add(_pad);
+
+  		key_space = new FlxButton(60, 60, "");
+        key_space.loadGraphic(Paths.image("key_space")); //"assets/images/key_space.png"
+        key_space.alpha = 0.75;
+        add(key_space);
+
+ 	 	addVirtualPad(FULL, A_B);
 
 		super.create();
 	}
@@ -170,26 +176,26 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P)
+			if (controls.UI_UP_P/* || _pad.buttonUp.justPressed*/)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.UI_DOWN_P)
+			if (controls.UI_DOWN_P/* || _pad.buttonDown.justPressed*/)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
 
-			if (controls.BACK)
+			if (controls.BACK/* || _pad.buttonB.justPressed*/)
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new TitleState());
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT/* || _pad.buttonA.justPressed*/)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
@@ -232,19 +238,21 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':
 										MusicBeatState.switchState(new OptionsState());
+									/*case 'lol':
+										MusicBeatState.switchState(new MasterEditorMenu());*/ // for test
 								}
 							});
 						}
 					});
 				}
 			}
-			#if mobile
-			else if (_virtualpad.buttonC.justPressed)
+			//#if mobile
+			else if (FlxG.keys.justPressed.SEVEN || key_space.justPressed)
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
-			#end
+			//#end
 		}
 
 		super.update(elapsed);

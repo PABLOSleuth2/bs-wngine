@@ -60,7 +60,7 @@ class Note extends FlxSprite
 	public var copyAlpha:Bool = true;
 
 	public var hitHealth:Float = 0.023;
-	public var missHealth:Float = 0.09;
+	public var missHealth:Float = 0.0475;
 
 	public var texture(default, set):String = null;
 
@@ -93,7 +93,7 @@ class Note extends FlxSprite
 					if(isSustainNote) {
 						missHealth = 0.1;
 					} else {
-						missHealth = 0.6;
+						missHealth = 0.3;
 					}
 					hitCausesMiss = true;
 				case 'No Animation':
@@ -193,7 +193,7 @@ class Note extends FlxSprite
 						prevNote.animation.play('redhold');
 				}
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05 * PlayState.songSpeed;
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05 * PlayState.SONG.speed;
 				if(PlayState.isPixelStage) {
 					prevNote.scale.y *= 1.19;
 				}

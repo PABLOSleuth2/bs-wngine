@@ -58,15 +58,19 @@ class Song
 		
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
-		#if android
+		#if dontUseManifest
 		var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
 		if(FileSystem.exists(moddyFile)) {
-			rawJson = Assets.getText(moddyFile).trim();
+			rawJson = File.getContent(moddyFile).trim();
 		}
 		#end
 
 		if(rawJson == null) {
+			#if dontUseManifest
+			rawJson = File.getContent(Paths.json(formattedFolder + '/' + formattedSong)).trim();
+			#else
 			rawJson = Assets.getText(Paths.json(formattedFolder + '/' + formattedSong)).trim();
+			#end
 		}
 
 		while (!rawJson.endsWith("}"))
@@ -83,7 +87,7 @@ class Song
 		/* 
 			for (i in 0...songData.notes.length)
 			{
-				//trace('LOADED FROM JSON: ' + songData.notes[i].sectionNotes);
+				trace('LOADED FROM JSON: ' + songData.notes[i].sectionNotes);
 				// songData.notes[i].sectionNotes = songData.notes[i].sectionNotes
 			}
 

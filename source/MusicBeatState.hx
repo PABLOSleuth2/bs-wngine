@@ -2,15 +2,21 @@ package;
 
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIState;
-import openfl.utils.Assets;
+import flixel.math.FlxRect;
+import flixel.util.FlxTimer;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.FlxSprite;
+import flixel.util.FlxColor;
+import flixel.util.FlxGradient;
+import flixel.FlxState;
+import flixel.FlxBasic;
 #if mobileC
 import flixel.FlxCamera;
-import flixel.input.actions.FlxActionInput;
 import ui.FlxVirtualPad;
+import flixel.input.actions.FlxActionInput;
 #end
 
 class MusicBeatState extends FlxUIState
